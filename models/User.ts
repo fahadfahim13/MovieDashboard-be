@@ -1,6 +1,14 @@
-import mongoose, { CallbackWithoutResultAndOptionalError } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+export interface IUser {
+  name: string;
+  email: string;
+  password?: string;
+  authProvider?: string;
+  image?: string;
+}
+
+const UserSchema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
@@ -27,3 +35,4 @@ const UserSchema = new mongoose.Schema(
 );
 
 export const User = mongoose.model("Users", UserSchema);
+
