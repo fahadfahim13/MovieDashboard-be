@@ -10,5 +10,9 @@ export const AppConfig = {
     USER_ROLES: {
         ADMIN: 'ADMIN',
         DEFAULT: 'default'
+    },
+    MEDIA_ACCESS_TYPE: {
+        PUBLIC: 'PUBLIC',
+        PRIVATE: 'PRIVATE'
     }
 }

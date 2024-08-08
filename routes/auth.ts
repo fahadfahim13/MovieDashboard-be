@@ -1,7 +1,4 @@
 import { Router } from "express";
-import { User } from "../models/User";
-import { generateToken } from "../utils/jwt";
-import { getHashedPassword, matchHashedPassword } from "../utils/bcrypt";
 import { loginController, registerController } from "../controllers/auth";
 
 const authRoute = Router();

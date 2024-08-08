@@ -116,7 +116,8 @@ export const loginService = async (
 
     const token = generateToken(
       foundUserResponse.payload.data?.id.toString() ?? "",
-      email
+      email,
+      foundUserResponse.payload.data?.role.toString() ?? AppConfig.USER_ROLES.DEFAULT,
     );
 
     const user = parseUser(foundUserResponse.payload.data, foundUserResponse.payload.data?.id.toString());

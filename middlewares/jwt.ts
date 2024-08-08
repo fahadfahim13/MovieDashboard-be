@@ -15,6 +15,7 @@ export const verifyAccessToken = (req: Request, res: Response, next: NextFunctio
             return res.status(403).json({ message: 'Invalid token' });
         }
         req.body.user = decoded;
+        console.log(req.body);
         next();
     });
 }
