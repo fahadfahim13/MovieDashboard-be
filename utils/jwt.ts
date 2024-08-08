@@ -1,7 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-
-const accessSecretKey = process.env.JWT_ACCESS_TOKEN_SECRET_KEY as string;
-const refreshSecretKey = process.env.JWT_REFRESH_TOKEN_SECRET_KEY as string;
+import { AppConfig } from '../config/AppConfig';
 
 export const generateToken = (userId: string, email: string, role = 'default') => {
     const payload = {
@@ -10,7 +8,7 @@ export const generateToken = (userId: string, email: string, role = 'default') =
         role
     };
     return {
-        accessToken: jwt.sign(payload, accessSecretKey, { expiresIn: '1h' }),
-        refreshToken: jwt.sign(payload, refreshSecretKey, { expiresIn: '1d' })
+        accessToken: jwt.sign(payload, AppConfig.SECRET_KEY.ACCESS_TOKEN, { expiresIn: '1h' }),
+        refreshToken: jwt.sign(payload, AppConfig.SECRET_KEY.REFRESH_TOKEN, { expiresIn: '1d' })
     }
 }

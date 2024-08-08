@@ -9,13 +9,14 @@ export const registerController = async (req: Request, res: Response) => {
       authProvider = "Email",
       name = "",
       image = "",
+      role = 'default'
     } = req.body;
     const userRegisterResponse = await registerService(
       name,
       email,
       password,
       authProvider,
-      image
+      image, role
     );
 
     return res.status(userRegisterResponse.payload.status).json({

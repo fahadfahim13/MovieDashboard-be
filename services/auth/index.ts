@@ -1,3 +1,4 @@
+import { AppConfig } from "../../config/AppConfig";
 import { User } from "../../models/User";
 import { getHashedPassword, matchHashedPassword } from "../../utils/bcrypt";
 import { generateToken } from "../../utils/jwt";
@@ -48,7 +49,8 @@ export const createNewUser = async (
   email: string,
   password: string,
   authProvider: string = "Email",
-  image: string = ""
+  image: string = "",
+  role: string = AppConfig.USER_ROLES.DEFAULT
 ): Promise<ReturnType> => {
   try {
     const hashedPassword = await getHashedPassword(password);
@@ -59,6 +61,7 @@ export const createNewUser = async (
       password: hashedPassword,
       image,
       authProvider,
+      role
     });
 
     const user = parseUser(newUser, newUser._id.toString());
@@ -116,6 +119,8 @@ export const loginService = async (
       email
     );
 
+    const user = parseUser(foundUserResponse.payload.data, foundUserResponse.payload.data?.id.toString());
+
     return {
       type: RESPONSE_TYPES.SUCCESS,
       payload: {
@@ -123,6 +128,7 @@ export const loginService = async (
         message: "Successfully logged in!!",
         data: {
           ...token,
+          user
         },
       },
     };
@@ -143,7 +149,8 @@ export const registerService = async (
   email: string,
   password: string,
   authProvider: string = "Email",
-  image: string = ""
+  image: string = "",
+  role: string = AppConfig.USER_ROLES.DEFAULT
 ): Promise<ReturnType> => {
   try {
     const foundUserResponse = await findUserFromEmail(email);
@@ -164,7 +171,8 @@ export const registerService = async (
       email,
       password,
       authProvider,
-      image
+      image,
+      role
     );
 
     return newUserResponse;

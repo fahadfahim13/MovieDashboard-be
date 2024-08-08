@@ -10,6 +10,7 @@ import "express-async-errors";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import { specs } from "./utils/swagger";
+import { AppConfig } from "./config/AppConfig";
 
 const app: Application = express();
 dotenv.config();
@@ -24,7 +25,7 @@ app.use(
   })
 );
 
-const PORT: number = parseInt(process.env.PORT as string) || 8000;
+const PORT: number = AppConfig.PORT || 8000;
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.get('/docs.json', (req, res) => {
@@ -32,9 +33,6 @@ app.get('/docs.json', (req, res) => {
   res.send(specs)
 })
 
-app.get("/", (req, res) => {
-  res.send("<h1>Welcome To JWT Authentication </h1>");
-});
 app.use('/api', routes);
 app.use((req, res, next) => {
   next(createHttpError.NotFound());
@@ -50,9 +48,9 @@ app.listen(PORT, async () => {
   console.log(`🗄️  Server Fire on http://localhost:${PORT}`);
 
   try {
-    console.log(process.env.DATABASE_URL);
+
     await mongoose.connect(
-      process.env.DATABASE_URL as string
+      AppConfig.DATABASE.URL
     );
     console.log("Connected To Database");
   } catch (error) {

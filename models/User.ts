@@ -6,6 +6,7 @@ export interface IUser {
   password?: string;
   authProvider?: string;
   image?: string;
+  role: string;
 }
 
 const UserSchema = new mongoose.Schema<IUser>(
@@ -20,19 +21,23 @@ const UserSchema = new mongoose.Schema<IUser>(
     },
     password: {
       type: String,
-      default: ''
+      default: "",
     },
     authProvider: {
-        type: String,
-        default: 'Email'
+      type: String,
+      default: "Email",
     },
     image: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
+    },
+    role: {
+      type: String,
+      required: true,
+      default: "default",
     },
   },
   { timestamps: true }
 );
 
 export const User = mongoose.model("Users", UserSchema);
-

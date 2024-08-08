@@ -1,8 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { AppConfig } from '../config/AppConfig';
 
-const accessSecretKey = process.env.JWT_ACCESS_TOKEN_SECRET_KEY as string;
-const refreshSecretKey = process.env.JWT_REFRESH_TOKEN_SECRET_KEY as string;
 
 export const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
     const token = (req.headers.authorization || req.headers.Authorization) as string;
@@ -11,7 +10,7 @@ export const verifyAccessToken = (req: Request, res: Response, next: NextFunctio
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    jwt.verify(token.split(' ')[1], accessSecretKey, (err, decoded) => {
+    jwt.verify(token.split(' ')[1], AppConfig.SECRET_KEY.ACCESS_TOKEN, (err, decoded) => {
         if (err) {
             return res.status(403).json({ message: 'Invalid token' });
         }
@@ -27,7 +26,7 @@ export const verifyRefreshToken = (req: Request, res: Response, next: NextFuncti
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    jwt.verify(token.split(' ')[1], refreshSecretKey, (err, decoded) => {
+    jwt.verify(token.split(' ')[1], AppConfig.SECRET_KEY.REFRESH_TOKEN, (err, decoded) => {
         if (err) {
             return res.status(403).json({ message: 'Invalid token' });
         }
